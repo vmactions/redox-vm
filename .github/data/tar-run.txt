@@ -1,0 +1,2 @@
+          ls /work
+          echo tar-vm-data > /work/fromvm.txt
