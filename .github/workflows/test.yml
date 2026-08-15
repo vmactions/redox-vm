@@ -108,7 +108,7 @@ jobs:
     - name: Test in Redox
       if: ${{ contains(fromJSON('{"x86_64":["tar"],"aarch64":[],"riscv64":[],"powerpc64":[],"sparc64":[],"ppc64le":[],"s390x":[],"i386":[],"loongarch64":[],"armv7":[]}')[matrix.arch == '' && 'x86_64' || matrix.arch], 'sshfs') }}
       id: test
-      uses: vmactions/redox-vm@df1bd80287d5cb117f4b005ac91789e5fdc0de62
+      uses: vmactions/redox-vm@f523119b1dea18459152691e77a37a874c7011f7
       with:
         envs: 'DEBUG MYTOKEN MYTOKEN2'
         prepare: |
@@ -259,7 +259,7 @@ jobs:
     - name: Test in Redox
       if: ${{ contains(fromJSON('{"x86_64":["tar"],"aarch64":[],"riscv64":[],"powerpc64":[],"sparc64":[],"ppc64le":[],"s390x":[],"i386":[],"loongarch64":[],"armv7":[]}')[matrix.arch == '' && 'x86_64' || matrix.arch], 'nfs') }}
       id: test
-      uses: vmactions/redox-vm@df1bd80287d5cb117f4b005ac91789e5fdc0de62
+      uses: vmactions/redox-vm@f523119b1dea18459152691e77a37a874c7011f7
       with:
         envs: 'DEBUG MYTOKEN MYTOKEN2'
         prepare: |
@@ -418,7 +418,7 @@ jobs:
     - name: Test in Redox
       if: ${{ contains(fromJSON('{"x86_64":["tar"],"aarch64":[],"riscv64":[],"powerpc64":[],"sparc64":[],"ppc64le":[],"s390x":[],"i386":[],"loongarch64":[],"armv7":[]}')[matrix.arch == '' && 'x86_64' || matrix.arch], 'scp') }}
       id: test
-      uses: vmactions/redox-vm@df1bd80287d5cb117f4b005ac91789e5fdc0de62
+      uses: vmactions/redox-vm@f523119b1dea18459152691e77a37a874c7011f7
       with:
         envs: 'DEBUG MYTOKEN MYTOKEN2'
         prepare: |
@@ -541,7 +541,7 @@ jobs:
     - name: Test in Redox
       if: ${{ contains('{"x86_64":["tar"],"aarch64":[],"riscv64":[],"powerpc64":[],"sparc64":[],"ppc64le":[],"s390x":[],"i386":[],"loongarch64":[],"armv7":[]}', 'tar') }}
       id: test
-      uses: vmactions/redox-vm@df1bd80287d5cb117f4b005ac91789e5fdc0de62
+      uses: vmactions/redox-vm@f523119b1dea18459152691e77a37a874c7011f7
       with:
         mem: 4096
         debug: true
@@ -608,7 +608,7 @@ jobs:
     - name: Test in Redox
       if: ${{ contains('{"x86_64":["tar"],"aarch64":[],"riscv64":[],"powerpc64":[],"sparc64":[],"ppc64le":[],"s390x":[],"i386":[],"loongarch64":[],"armv7":[]}', '9p') }}
       id: test
-      uses: vmactions/redox-vm@df1bd80287d5cb117f4b005ac91789e5fdc0de62
+      uses: vmactions/redox-vm@f523119b1dea18459152691e77a37a874c7011f7
       with:
         mem: 4096
         debug: true
@@ -725,7 +725,7 @@ jobs:
     - name: Test in Redox
       if: ${{ contains(fromJSON('{"x86_64":["tar"],"aarch64":[],"riscv64":[],"powerpc64":[],"sparc64":[],"ppc64le":[],"s390x":[],"i386":[],"loongarch64":[],"armv7":[]}')[matrix.arch == '' && 'x86_64' || matrix.arch], 'rsync') }}
       id: test
-      uses: vmactions/redox-vm@df1bd80287d5cb117f4b005ac91789e5fdc0de62
+      uses: vmactions/redox-vm@f523119b1dea18459152691e77a37a874c7011f7
       with:
         envs: 'MYTOKEN MYTOKEN2'
         prepare: |
@@ -871,7 +871,7 @@ jobs:
     - name: Test in Redox
       if: ${{ contains(fromJSON('{"x86_64":["tar"],"aarch64":[],"riscv64":[],"powerpc64":[],"sparc64":[],"ppc64le":[],"s390x":[],"i386":[],"loongarch64":[],"armv7":[]}')[matrix.arch == '' && 'x86_64' || matrix.arch], 'rsync') }}
       id: test
-      uses: vmactions/redox-vm@df1bd80287d5cb117f4b005ac91789e5fdc0de62
+      uses: vmactions/redox-vm@f523119b1dea18459152691e77a37a874c7011f7
       with:
         envs: 'MYTOKEN MYTOKEN2'
         prepare: |
@@ -984,7 +984,7 @@ jobs:
     - name: Test in Redox
       if: ${{ contains(fromJSON('{"x86_64":["tar"],"aarch64":[],"riscv64":[],"powerpc64":[],"sparc64":[],"ppc64le":[],"s390x":[],"i386":[],"loongarch64":[],"armv7":[]}')['x86_64'], 'rsync') }}
       id: test
-      uses: vmactions/redox-vm@df1bd80287d5cb117f4b005ac91789e5fdc0de62
+      uses: vmactions/redox-vm@f523119b1dea18459152691e77a37a874c7011f7
       with:
         mem: 4096
         debug: true
@@ -1041,7 +1041,7 @@ jobs:
     - name: Test in Redox
       if: ${{ contains(fromJSON('{"x86_64":["tar"],"aarch64":[],"riscv64":[],"powerpc64":[],"sparc64":[],"ppc64le":[],"s390x":[],"i386":[],"loongarch64":[],"armv7":[]}')['x86_64'], 'rsync') }}
       id: test
-      uses: vmactions/redox-vm@df1bd80287d5cb117f4b005ac91789e5fdc0de62
+      uses: vmactions/redox-vm@f523119b1dea18459152691e77a37a874c7011f7
       with:
         mem: 4096
         debug: true
@@ -1114,7 +1114,7 @@ jobs:
     - name: Test in Redox
       id: testerr
       continue-on-error: true
-      uses: vmactions/redox-vm@df1bd80287d5cb117f4b005ac91789e5fdc0de62
+      uses: vmactions/redox-vm@f523119b1dea18459152691e77a37a874c7011f7
       with:
         debug: true
         # A command that EXISTS and fails, rather than `false` or a made-up
@@ -1160,7 +1160,7 @@ jobs:
     - name: Test in Redox
       id: testpass
       continue-on-error: true
-      uses: vmactions/redox-vm@df1bd80287d5cb117f4b005ac91789e5fdc0de62
+      uses: vmactions/redox-vm@f523119b1dea18459152691e77a37a874c7011f7
       with:
         debug: true
         # No `true` and no double quotes: this body runs on every guest, and
