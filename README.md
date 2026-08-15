@@ -1,6 +1,6 @@
-# Run GitHub CI in DragonflyBSD 
+# Run GitHub CI in Redox 
 
-![Test](https://github.com/vmactions/dragonflybsd-vm/workflows/Test/badge.svg)
+![Test](https://github.com/vmactions/redox-vm/workflows/Test/badge.svg)
 
 
 
@@ -15,7 +15,7 @@ Powered by [AnyVM.org](https://anyvm.org)
 >
 > These VMs are now AI-ready. With the **[vmactions-ci skill](https://github.com/vmactions/vmactions-skill)**, an AI coding agent -- Claude Code, Codex, Copilot CLI, Gemini CLI, and others -- understands the full vmactions interface and writes the GitHub Actions CI for you, **automatically**.
 >
-> Just describe what you want in plain language, e.g. *"run my tests on DragonflyBSD"* or *"check that my project builds on DragonflyBSD aarch64"*, and the agent generates a correct, ready-to-commit `test.yml`. It will:
+> Just describe what you want in plain language, e.g. *"run my tests on Redox"* or *"check that my project builds on Redox aarch64"*, and the agent generates a correct, ready-to-commit `test.yml`. It will:
 >
 > - pick the right action, `release`, and `arch` for your target;
 > - install your toolchain and dependencies in the `prepare` step;
@@ -27,25 +27,33 @@ Powered by [AnyVM.org](https://anyvm.org)
 >
 > ### >> [Get the vmactions-ci skill](https://github.com/vmactions/vmactions-skill) <<
 
-Use this action to run your CI in DragonflyBSD.
+Use this action to run your CI in Redox.
 
-The github workflow only supports Ubuntu, Windows and MacOS. But what if you need to use DragonflyBSD?
+The github workflow only supports Ubuntu, Windows and MacOS. But what if you need to use Redox?
 
 
 All the supported releases are here:
 
 
 
-| Release | x86_64(amd64) |
+| Release | x86_64 |
 |---------|---------|
-| 6.4.2 | ✅ (rsync,scp,nfs) |
-| 6.4.1 | ✅ (rsync,scp,nfs) |
-| 6.4.0 | ✅ (rsync,scp,nfs) |
+| 0.9.0 | ✅ (tar) |
 
-<!-- arch-label: x86_64 = x86_64(amd64) -->
-Note: sshfs is not offered on DragonFlyBSD -- the sshfs (FUSE) mount is
-read-only in practice (the guest can read the shared dir, but writing a file
-back into the mount fails), so only rsync / scp / nfs are listed.
+> ℹ️ **Telnet + tar, not SSH.** Redox ships no remote-access server of any
+> kind, so this builder bakes one in: the official prebuilt image is
+> downloaded and `files/anyvmd.rs` -- a `#![no_std]` agent -- is
+> offline-injected into it. anyvm drives that agent over telnet and syncs with
+> `--sync tar`, the same shape as the plan9 and reactos builders. `/bin/tar`
+> is already on the stock image, so unlike ReactOS nothing else has to be
+> baked in.
+>
+> The agent links `redox-rt` rather than relibc, which is what makes it
+> possible: the 0.9.0 kernel has no process-creation syscall at all -- no
+> `clone`, `fexec`, `spawn` or `fork` -- because spawning moved into userspace
+> into redox-rt, and redox-rt is itself `no_std` and libc-independent.
+> See [NOTES.md](NOTES.md) and
+> [files/anyvmd-design.md](files/anyvmd-design.md).
 
 
 
@@ -62,28 +70,25 @@ on: [push]
 jobs:
   test:
     runs-on: ubuntu-latest
-    name: A job to run test in DragonflyBSD
+    name: A job to run test in Redox
     env:
       MYTOKEN : ${{ secrets.MYTOKEN }}
       MYTOKEN2: "value2"
     steps:
     - uses: actions/checkout@v6
-    - name: Test in DragonflyBSD
+    - name: Test in Redox
       id: test
-      uses: vmactions/dragonflybsd-vm@v1
+      uses: vmactions/redox-vm@v0
       with:
         envs: 'MYTOKEN MYTOKEN2'
         usesh: true
         prepare: |
-          pkg install -y socat
+          uname -a
 
         run: |
-          pwd
-          ls -lah
-          whoami
-          env
           uname -a
-          echo "OK"
+          ls /work
+
 
 
 
@@ -91,7 +96,7 @@ jobs:
 ```
 
 
-The latest major version is: `v1`, which is the most recommended to use. (You can also use the latest full version: `v1.3.1`)  
+The latest major version is: `v0`, which is the most recommended to use. (You can also use the latest full version: `v0.0.0`)  
 
 
 If you are migrating from the previous `v0`, please change the `runs-on: ` to `runs-on: ubuntu-latest`
@@ -126,7 +131,7 @@ The code is shared from the host to the VM via `rsync` by default, you can choos
 
     - name: Test
       id: test
-      uses: vmactions/dragonflybsd-vm@v1
+      uses: vmactions/redox-vm@v0
       with:
         sync: sshfs  # or: nfs
 
@@ -148,7 +153,7 @@ When using `rsync` or `scp`,  you can define `copyback: false` to not copy files
 
     - name: Test
       id: test
-      uses: vmactions/dragonflybsd-vm@v1
+      uses: vmactions/redox-vm@v0
       with:
         sync: rsync
         copyback: false
@@ -171,7 +176,7 @@ You can add NAT port between the host and the VM.
 ...
     - name: Test
       id: test
-      uses: vmactions/dragonflybsd-vm@v1
+      uses: vmactions/redox-vm@v0
       with:
         nat: |
           "8080": "80"
@@ -190,7 +195,7 @@ The default memory of the VM is 6144MB, you can use `mem` option to set the memo
 ...
     - name: Test
       id: test
-      uses: vmactions/dragonflybsd-vm@v1
+      uses: vmactions/redox-vm@v0
       with:
         mem: 4096
 ...
@@ -204,7 +209,7 @@ The VM is using all the cpu cores of the host by default, you can use `cpu` opti
 ...
     - name: Test
       id: test
-      uses: vmactions/dragonflybsd-vm@v1
+      uses: vmactions/redox-vm@v0
       with:
         cpu: 3
 ...
@@ -213,15 +218,15 @@ The VM is using all the cpu cores of the host by default, you can use `cpu` opti
 
 ## 5. Select release
 
-It uses [the DragonflyBSD 6.4.2](conf/default.release.conf) by default, you can use `release` option to use another version of DragonflyBSD:
+It uses [the Redox 0.9.0](conf/default.release.conf) by default, you can use `release` option to use another version of Redox:
 
 ```yaml
 ...
     - name: Test
       id: test
-      uses: vmactions/dragonflybsd-vm@v1
+      uses: vmactions/redox-vm@v0
       with:
-        release: "6.4.0"
+        release: "0.9.0"
 ...
 ```
 
@@ -231,13 +236,13 @@ You can also give only the leading, `.` separated part of a release. The newest 
 ...
     - name: Test
       id: test
-      uses: vmactions/dragonflybsd-vm@v1
+      uses: vmactions/redox-vm@v0
       with:
-        release: "6"
+        release: "0"
 ...
 ```
 
-Here `release: "6"` runs the newest `6.x` release of DragonflyBSD. Give more parts to narrow it down: `release: "6.4"` runs the newest `6.4.x`. Each part you give has to match in full, so a release that does not exist fails the job instead of quietly falling back to another one.
+Here `release: "0"` runs the newest `0.x` release of Redox. Give more parts to narrow it down: `release: "0.9"` runs the newest `0.9.x`. Each part you give has to match in full, so a release that does not exist fails the job instead of quietly falling back to another one.
 
 ## 6. Select architecture
 
@@ -247,7 +252,7 @@ The vm is using x86_64(AMD64) by default, but you can use `arch` option to chang
 ...
     - name: Test
       id: test
-      uses: vmactions/dragonflybsd-vm@v1
+      uses: vmactions/redox-vm@v0
       with:
         arch: aarch64
 ...
@@ -269,16 +274,16 @@ Support custom shell:
     - uses: actions/checkout@v6
     - name: Start VM
       id: vm
-      uses: vmactions/dragonflybsd-vm@v1
+      uses: vmactions/redox-vm@v0
       with:
         sync: nfs
     - name: Custom shell step 1
-      shell: dragonflybsd {0}
+      shell: redox {0}
       run: |
         pwd
         echo "this is step 1, running inside the VM"
     - name: Custom shell step 2
-      shell: dragonflybsd {0}
+      shell: redox {0}
       run: |
         pwd
         echo "this is step 2, running inside the VM"
@@ -300,7 +305,7 @@ You can also use `custom-shell-name` to set a custom name for the shell wrapper:
     - uses: actions/checkout@v6
     - name: Start VM
       id: vm
-      uses: vmactions/dragonflybsd-vm@v1
+      uses: vmactions/redox-vm@v0
       with:
         sync: nfs
         custom-shell-name: vmsh
@@ -326,7 +331,7 @@ If the time in VM is not correct, You can use `sync-time` option to synchronize 
 ...
     - name: Test
       id: test
-      uses: vmactions/dragonflybsd-vm@v1
+      uses: vmactions/redox-vm@v0
       with:
         sync-time: true
 ...
@@ -341,7 +346,7 @@ By default, the action caches `apt` packages on the host and VM images/artifacts
 ...
     - name: Test
       id: test
-      uses: vmactions/dragonflybsd-vm@v1
+      uses: vmactions/redox-vm@v0
       with:
         disable-cache: true
 ...
@@ -356,11 +361,11 @@ The `prepare` step (installing packages etc.) normally runs on every build. With
 ...
     - name: Test
       id: test
-      uses: vmactions/dragonflybsd-vm@v1
+      uses: vmactions/redox-vm@v0
       with:
         cache-after-prepare: true
         prepare: |
-          pkg install -y socat
+          uname -a
         run: |
           ...
 ...
@@ -389,7 +394,7 @@ Then use it in the workflow:
 ...
     - name: Test
       id: test
-      uses: vmactions/dragonflybsd-vm@v1
+      uses: vmactions/redox-vm@v0
       with:
         debug-on-error: ${{ vars.DEBUG_ON_ERROR }}
 
@@ -402,7 +407,7 @@ You can also set the `vnc-password` parameter to set a custom password to protec
 ...
     - name: Test
       id: test
-      uses: vmactions/dragonflybsd-vm@v1
+      uses: vmactions/redox-vm@v0
       with:
         debug-on-error: ${{ vars.DEBUG_ON_ERROR }}
         vnc-password: ${{ secrets.VNC_PASSWORD }}
@@ -419,7 +424,7 @@ See more: [debug on error](https://github.com/vmactions/.github/wiki/debug%E2%80
 
 # Under the hood
 
-We use Qemu to run the DragonflyBSD VM.
+We use Qemu to run the Redox VM.
 
 
 
