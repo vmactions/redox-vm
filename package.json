@@ -1,6 +1,6 @@
 {
   "name": "vmactions-Redox",
-  "version": "",
+  "version": "1.0.0",
   "description": "GitHub actions for Redox",
   "type": "module",
   "main": "index.js",
