@@ -87,27 +87,7 @@ jobs:
             arch: loongarch64
           - release: "0.9.0"
             arch: armv7
-          - release: ""
-            arch: aarch64
-          - release: ""
-            arch: riscv64
-          - release: ""
-            arch: powerpc64
-          - release: ""
-            arch: sparc64
-          - release: ""
-            arch: ppc64le
-          - release: ""
-            arch: s390x
-          - release: ""
-            arch: i386
-          - release: ""
-            arch: loongarch64
-          - release: ""
-            arch: armv7
           - release: "0.9.0"
-            arch: ""
-          - release: ""
             arch: ""
 
 
@@ -257,27 +237,7 @@ jobs:
             arch: loongarch64
           - release: "0.9.0"
             arch: armv7
-          - release: ""
-            arch: aarch64
-          - release: ""
-            arch: riscv64
-          - release: ""
-            arch: powerpc64
-          - release: ""
-            arch: sparc64
-          - release: ""
-            arch: ppc64le
-          - release: ""
-            arch: s390x
-          - release: ""
-            arch: i386
-          - release: ""
-            arch: loongarch64
-          - release: ""
-            arch: armv7
           - release: "0.9.0"
-            arch: ""
-          - release: ""
             arch: ""
 
 
@@ -420,27 +380,7 @@ jobs:
             arch: loongarch64
           - release: "0.9.0"
             arch: armv7
-          - release: ""
-            arch: aarch64
-          - release: ""
-            arch: riscv64
-          - release: ""
-            arch: powerpc64
-          - release: ""
-            arch: sparc64
-          - release: ""
-            arch: ppc64le
-          - release: ""
-            arch: s390x
-          - release: ""
-            arch: i386
-          - release: ""
-            arch: loongarch64
-          - release: ""
-            arch: armv7
           - release: "0.9.0"
-            arch: ""
-          - release: ""
             arch: ""
 
 
@@ -748,27 +688,7 @@ jobs:
             arch: loongarch64
           - release: "0.9.0"
             arch: armv7
-          - release: ""
-            arch: aarch64
-          - release: ""
-            arch: riscv64
-          - release: ""
-            arch: powerpc64
-          - release: ""
-            arch: sparc64
-          - release: ""
-            arch: ppc64le
-          - release: ""
-            arch: s390x
-          - release: ""
-            arch: i386
-          - release: ""
-            arch: loongarch64
-          - release: ""
-            arch: armv7
           - release: "0.9.0"
-            arch: ""
-          - release: ""
             arch: ""
 
 
